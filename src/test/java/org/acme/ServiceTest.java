@@ -22,27 +22,25 @@ public class ServiceTest {
     @Inject
     Service service;
 
+    @Test //PASSES
+    public void testSpyCreatedByInjection() {
+        assertNotNull(serviceSpy.getSubService());
+    }
 
     /*
     as in
         https://github.com/quarkusio/quarkus/issues/20906
         https://quarkus.io/blog/mocking/
      */
-    @BeforeEach
-    public void setUp() {
-//        service.subService = Arc.container().select(SubService.class).get(); //expected installMockForType does setting subService like this line does
-        Service serviceSpy = Mockito.spy(Service.class);
-        Mockito.when(serviceSpy.hello()).thenReturn("mocked Hello");
-        QuarkusMock.installMockForType(serviceSpy, Service.class); //replace injected Service by Spy
-    }
-
-    @Test //PASSES
-    public void testSpyCreatedByInjection() {
-        assertNotNull(serviceSpy.getSubService());
-    }
-
     @Test //FAILS -> service.subService is null
     public void testSpyCreatedByCode() {
+        Service serviceSpy = Mockito.spy(Service.class);
+
+//        serviceSpy.subService = Arc.container().select(SubService.class).get(); => expected installMockForType does setting subService like this line does
+
+        Mockito.when(serviceSpy.hello()).thenReturn("mocked Hello");
+        QuarkusMock.installMockForType(serviceSpy, Service.class); //replace injected Service by Spy
+
         assertEquals("mocked Hello", service.hello()); //installMockForType worked
         assertNotNull(service.getSubService());
     }
