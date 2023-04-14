@@ -1,5 +1,6 @@
 package org.acme;
 
+import io.quarkus.arc.Arc;
 import io.quarkus.test.junit.QuarkusMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectSpy;
@@ -21,6 +22,7 @@ public class ServiceTest {
     @Inject
     Service service;
 
+
     /*
     as in
         https://github.com/quarkusio/quarkus/issues/20906
@@ -28,6 +30,7 @@ public class ServiceTest {
      */
     @BeforeEach
     public void setUp() {
+//        service.subService = Arc.container().select(SubService.class).get(); //expected installMockForType does setting subService like this line does
         Service serviceSpy = Mockito.spy(Service.class);
         Mockito.when(serviceSpy.hello()).thenReturn("mocked Hello");
         QuarkusMock.installMockForType(serviceSpy, Service.class); //replace injected Service by Spy
