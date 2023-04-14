@@ -36,7 +36,7 @@ public class ServiceTest {
     public void testSpyCreatedByCode() {
         Service serviceSpy = Mockito.spy(Service.class);
 
-//        serviceSpy.subService = Arc.container().select(SubService.class).get(); => expected installMockForType does setting subService like this line does
+//        serviceSpy.subService = Arc.container().select(SubService.class).get(); // expected installMockForType does setting subService like this line does
 
         Mockito.when(serviceSpy.hello()).thenReturn("mocked Hello");
         QuarkusMock.installMockForType(serviceSpy, Service.class); //replace injected Service by Spy
