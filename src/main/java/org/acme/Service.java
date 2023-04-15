@@ -13,7 +13,7 @@ public class Service {
 
     @PostConstruct
     public void init() {
-        Log.info("service constructed");
+        Log.info("Service constructed");
     }
 
     public String hello(){ return "";}
